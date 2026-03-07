@@ -15,9 +15,11 @@ from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
 from .const import (
+    CONF_INCLUDE_OTHER_DEVICES,
     CONF_REFRESH_RATE,
     CONF_USE_TLS,
     DEFAULT_HOST,
+    DEFAULT_INCLUDE_OTHER_DEVICES,
     DEFAULT_REFRESH_RATE,
     DEFAULT_TITLE,
     DEFAULT_USE_TLS,
@@ -146,7 +148,15 @@ class OptionsFlow(config_entries.OptionsFlow):
             step_id="init",
             data_schema=self.add_suggested_values_to_schema(
                 vol.Schema(
-                    {vol.Optional(CONF_REFRESH_RATE, default=DEFAULT_REFRESH_RATE): int}
+                    {
+                        vol.Optional(
+                            CONF_REFRESH_RATE, default=DEFAULT_REFRESH_RATE
+                        ): int,
+                        vol.Optional(
+                            CONF_INCLUDE_OTHER_DEVICES,
+                            default=DEFAULT_INCLUDE_OTHER_DEVICES,
+                        ): bool,
+                    }
                 ),
                 self.config_entry.options,
             ),

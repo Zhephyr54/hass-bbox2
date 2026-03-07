@@ -25,7 +25,8 @@
       "init": {
         "description": "Merci de reconfigurer la connexion à votre  Bbox.",
         "data": {
-          "refresh_rate": "Fréquence de rafraîchissement (en secondes)"
+          "refresh_rate": "Fréquence de rafraîchissement (en secondes)",
+          "include_other_devices": "Inclure les autres appareils connectés"
         }
       }
     }

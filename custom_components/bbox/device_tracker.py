@@ -56,7 +56,7 @@ class BboxDeviceTracker(BboxDeviceEntity, ScannerEntity):
 
     @property
     def ip_address(self) -> str:
-        """Return mac address."""
+        """Return ip address."""
         return self._device["ipaddress"]
 
     @property
