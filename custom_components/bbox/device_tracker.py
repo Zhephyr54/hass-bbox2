@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import Any
 
 from homeassistant.components.device_tracker import SourceType
@@ -13,6 +14,8 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from . import BBoxConfigEntry
 from .coordinator import BboxDataUpdateCoordinator
 from .entity import BboxDeviceEntity
+
+_LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(
@@ -27,6 +30,8 @@ async def async_setup_entry(
         for device in devices
         if device.get("macaddress")
     ]
+
+    _LOGGER.debug("Adding device tracker entities: %s", [entity._attr_name for entity in entities])
     async_add_entities(entities)
 
 

@@ -81,9 +81,11 @@ class BboxDataUpdateCoordinator(DataUpdateCoordinator):
                 CONF_INCLUDE_OTHER_DEVICES, DEFAULT_INCLUDE_OTHER_DEVICES
             )
             if include_other_devices:
+                _LOGGER.debug("Fetching connected devices (include_other_devices=%s)", include_other_devices)
                 devices = await self._call(self.bbox.lan.async_get_connected_devices)
                 devices = self.merge_objects(devices)
             else:
+                _LOGGER.debug("Skipping fetching connected devices (include_other_devices=%s)", include_other_devices)
                 devices = {}
 
             wan_ip_stats = self.check_list(
