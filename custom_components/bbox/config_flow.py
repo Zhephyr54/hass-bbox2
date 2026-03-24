@@ -35,6 +35,10 @@ SCHEMA = vol.Schema(
         vol.Required(CONF_PASSWORD): str,
         vol.Required(CONF_USE_TLS, default=DEFAULT_USE_TLS): bool,
         vol.Required(CONF_VERIFY_SSL, default=DEFAULT_VERIFY_SSL): bool,
+        vol.Optional(
+            CONF_INCLUDE_OTHER_DEVICES,
+            default=DEFAULT_INCLUDE_OTHER_DEVICES,
+        ): bool,
     }
 )
 
@@ -72,9 +76,14 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     and len(infos) > 0
                     and (sn := infos[0].get("device", {}).get("serialnumber"))
                 ):
+                    options = {
+                        CONF_INCLUDE_OTHER_DEVICES: user_input.pop(
+                            CONF_INCLUDE_OTHER_DEVICES
+                        )
+                    }
                     await self.async_set_unique_id(sn)
                     self._abort_if_unique_id_configured()
-                    return self.async_create_entry(title=DEFAULT_TITLE, data=user_input)
+                    return self.async_create_entry(title=DEFAULT_TITLE, data=user_input, options=options)
 
                 errors["base"] = "serialnumber"
 
@@ -134,7 +143,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         )
 
 
-class OptionsFlow(config_entries.OptionsFlow):
+class OptionsFlow(config_entries.OptionsFlowWithReload):
     """Handle a options flow for Bouygues Bbox."""
 
     async def async_step_init(
